@@ -1,14 +1,31 @@
 # AI Web Scraper & Chat
 
-This project is an AI-powered web scraper and chat application built using Streamlit. It allows users to scrape content from a given URL and interact with the scraped content through a chat interface.
+An AI-powered web scraper and chat application built using Streamlit. It allows users to scrape content from any public webpage and interact with the scraped content through a chat interface powered by Google's Gemini API.
 
 ## Features
 
-- Scrape content from a given URL
-- Analyze and query the scraped content
-- Display chat history
-- Respect robots.txt rules
-- Rate limiting for web scraping
+- 🌐 **Web Scraping** - Scrape content from any public URL using Playwright
+- 🤖 **AI-Powered Analysis** - Query scraped content using Google's Gemini AI
+- 💬 **Chat Interface** - Interactive chat with conversation history
+- 🔒 **Security** - SSRF protection and URL validation
+- ⚡ **Rate Limiting** - Automatic rate limiting per domain
+- 🎨 **Modern UI** - Clean Streamlit interface with native chat components
+
+## Project Structure
+
+```
+gemini_scraper/
+├── app/
+│   ├── __init__.py      # Package initialization
+│   ├── config.py        # Configuration management
+│   ├── scraper.py       # Web scraper and AI analyzer
+│   ├── ui.py            # Streamlit UI components
+│   └── utils.py         # Utility functions
+├── main.py              # Application entry point
+├── requirements.txt     # Python dependencies
+├── .env                 # Environment variables (not in repo)
+└── README.md            # This file
+```
 
 ## Installation
 
@@ -29,10 +46,26 @@ This project is an AI-powered web scraper and chat application built using Strea
     pip install -r requirements.txt
     ```
 
-4. Create a `.env` file and add your Gemini API key:
+4. Install Playwright browsers:
+    ```sh
+    playwright install chromium
+    ```
+
+5. Create a `.env` file and add your Gemini API key:
     ```env
     GEMINI_API_KEY=your_gemini_api_key
     ```
+
+## Configuration
+
+You can customize the application by setting environment variables in your `.env` file:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `GEMINI_API_KEY` | Google Gemini API key (required) | - |
+| `GEMINI_MODEL` | Gemini model to use | `gemini-1.5-pro` |
+| `RATE_LIMIT_DELAY` | Delay between requests (seconds) | `1.0` |
+| `PAGE_WAIT_TIMEOUT` | Page load wait time (ms) | `2000` |
 
 ## Usage
 
@@ -47,7 +80,24 @@ This project is an AI-powered web scraper and chat application built using Strea
 
 4. Once the content is scraped, you can ask questions about the content in the chat input at the bottom of the page.
 
-## Project Structure
+## Security Features
 
-- `main.py`: The main application file containing the web scraper and chat logic.
-- `.env`: Environment variables file (not included in the repository).
+- **URL Validation** - Validates URL format and scheme (http/https only)
+- **SSRF Protection** - Blocks access to internal/private IP addresses
+- **XSS Prevention** - Uses Streamlit's native components for safe rendering
+- **Rate Limiting** - Prevents excessive requests to the same domain
+
+## Architecture
+
+The application follows a modular architecture:
+
+- **`config.py`** - Centralized configuration using dataclasses
+- **`scraper.py`** - WebScraper class with separate components:
+  - `RateLimiter` - Handles request rate limiting
+  - `ContentAnalyzer` - Interfaces with Gemini API
+- **`ui.py`** - All Streamlit UI components and handlers
+- **`utils.py`** - URL validation, SSRF checks, and helpers
+
+## License
+
+MIT License

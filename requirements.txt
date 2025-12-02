@@ -3,6 +3,5 @@ requests
 beautifulsoup4
 google-generativeai
 python-dotenv
-robotexclusionrulesparser
 playwright
 nest-asyncio
